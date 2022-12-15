@@ -1,9 +1,26 @@
 #!/usr/bin/env bash
-#Configure a new Nginx server so that /redirect_me is redirecting to another page
+# A Bash script that configures a new Ubuntu machine to respect the requirements:
+#+ Install nginx
+#+ Nginx should be listening on port 80
+#+ When querying Nginx at its root / with a GET request (requesting a page) using curl, it must return a page that contains the string Hello World!
 
 sudo apt-get -y update
+sudo apt-get -y upgrade
 sudo apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
-echo "Hello World" | sudo tee /var/www/html/index
-sudo sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/ permanent;' /etc/nginx/sites-available/default
-sudo service nginx restart
+
+sudo mkdir /usr/share/nginx/html
+sudo touch /usr/share/nginx/html/index.html
+sudo echo "Hello World!" > /usr/share/nginx/html/index.html
+sudo printf %s "server {
+     listen      80 default_server;
+     listen      [::]:80 default_server;
+     root        /usr/share/nginx/html;
+     index       index.html index.htm;
+}
+
+location /redirect_me {
+        return 301 http://cuberule.com/;
+    }
+" > /etc/nginx/sites-available/default
+
+sudo service nginx start
