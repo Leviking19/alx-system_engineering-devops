@@ -12,23 +12,22 @@ sudo apt-get -y install nginx
 
 sudo mkdir /usr/share/nginx/html
 sudo touch /usr/share/nginx/html/index.html
-echo "Hello World!" > /usr/share/nginx/html/index.html
+sudo echo "Hello World!" > /usr/share/nginx/html/index.html
 sudo touch /etc/nginx/html/404.html
-echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
-printf %s "server {
+sudo echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
+sudo printf %s "server {
      listen      80 default_server;
      listen      [::]:80 default_server;
      root        /usr/share/nginx/html;
      index       index.html index.htm;
 
-     error_page 404 /404.html;
-     location = /404.html {
-             root /var/www/html;
-             internal;
-     }
-
      location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+     }
+     error_page 404 /404.html;
+     location = /404.html {
+          root /etc/nginx/html;
+          internal;
      }
 }" > /etc/nginx/sites-available/default
 
