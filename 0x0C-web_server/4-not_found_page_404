@@ -21,8 +21,8 @@ printf %s "server {
      root        /usr/share/nginx/html;
      index       index.html index.htm;
 
-     error_page 404 /error404.html;
-     location = /error404.html {
+     error_page 404 /404.html;
+     location = /404.html {
              root /var/www/html;
              internal;
      }
